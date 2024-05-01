@@ -1,0 +1,68 @@
+<c-card class="app-community mb-3">
+  <c-card-header>Contact Request</c-card-header>
+  <c-card-body>
+    <c-row class="pb-3">
+      <app-filter (searchClick)="onSearch()"></app-filter>
+    </c-row>
+
+    <app-table>
+      <thead cTableColor="light">
+        <tr class="text-center">
+          <th class="text-center">No</th>
+          <th>Practitioner Name</th>
+          <!-- <th>Logo</th>
+            <th>Topic Name</th>
+            <th>Billing</th>
+            <th>State</th>
+            <th>Phone</th>
+            <th>Email</th> -->
+          <th>Appointment Date</th>
+          <th>Appointment Time (EST)</th>
+          <th>Patient Photo</th>
+          <th>Patient name</th>
+          <th>Status</th>
+          <th>Date of Creation</th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container
+          *ngFor="let appointment of appointmnetContactList; let i = index"
+        >
+          <tr class="text-center align-middle" *ngIf="appointment.id">
+            <td>
+              {{ i + 1 }}
+            </td>
+            <td>{{ appointment.practitionerName }}</td>
+            <td>{{ appointment.appointmentDateTime | date : "MM-dd-YYYY" }}</td>
+            <td>{{ displayLocalTime(appointment.appointmentDateTime) }}</td>
+            <!-- <td>{{ appointment.appointmentDateTime | date : "h:mm a"}}</td> -->
+            <td>
+              <img
+                class="avatar-img"
+                [src]="appointment.ProfilePicName"
+                onerror="this.onerror=null;this.src='/assets/img/avatars/placeholder-user.png';"
+              />
+            </td>
+            <td>{{ appointment.FirstName }}</td>
+            <!-- <td>{{ appointment.LastName }}</td> -->
+            <td>
+              <button class="btn btn-sm text-white" [class.btn-danger]="appointment.isCancelled === 'N'" [class.btn-success]="appointment.isCancelled === 'Y'">
+                {{
+                  appointment?.isCancelled === "N" ? "Scheduled" : "Cancelled"
+                }}
+              </button>
+            </td>
+            <!-- <td>{{ appointment.isCancelled }}</td> -->
+            <td>{{ appointment.createdDate | date : "d-MM-YYYY" }}</td>
+          </tr>
+        </ng-container>
+      </tbody>
+
+      <h6 *ngIf="!appointmnetContactList.length" class="text-center p-5 m-0">
+        No contact available
+      </h6>
+    </app-table>
+    <app-pagination
+      [items]="pagination?.totalItems"
+      (onPageChange)="onPageChange($event)" /></c-card-body
+></c-card>
